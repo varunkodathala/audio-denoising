@@ -1,0 +1,23 @@
+clc;
+clear all;
+close all;
+
+[x,fs] = audioread('original.m4a');
+
+x = x(:,1);
+
+subplot(2,1,1)
+plot(x)
+title('Noisy Audio')
+
+N = length(x);
+
+noisy_fft = abs(fft(noisy));
+
+L = length(noisy_fft);
+
+f = (0:L-1)*(fs/L);
+
+power_shift = fftshift(noisy_fft);
+
+fc1 = 

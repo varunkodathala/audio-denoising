@@ -1,0 +1,58 @@
+clc;
+clear all;
+close all;
+
+[x,fs] = audioread('varun.m4a');
+
+x = x(:,1);
+
+
+plot(x);
+
+noisy = awgn(x,8,'measured');
+
+N = length(noisy);
+
+figure();
+
+plot(noisy);
+
+noisy_fft = abs(fft(noisy));
+power_noisy = (1/N)*(noisy_fft).^2;
+
+L = length(noisy_fft);
+
+f = (0:L-1)*(fs/L);
+
+power_shift = fftshift(noisy_fft);
+
+figure()
+
+plot(f,power_shift(1:length(f)));
+
+fc = [1 3]*10^3*(1/fs);
+
+[b,a] = butter(5,fc,'bandpass');
+
+figure();
+
+freqz(b,a)
+
+recover = filter(b,a,x);
+
+
+recover_fft = abs(fft(recover));
+
+figure()
+
+plot(f,recover_fft(1:length(f)))
+
+figure()
+
+plot(recover)
+
+sound(recover,fs);
+
+d
+disp(snr(recover))
+
